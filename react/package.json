@@ -4,13 +4,19 @@
   "description": "Mobile platforms lab 2 - react",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --mode development --open --hot",
+    "_build:dev": "webpack --mode development",
+    "_build:prod": "webpack --mode production",
+    "build": "npm run _build:prod",
+    "post_build:dev": "cp public/manifest.json dist/ & cp public/images dist/ -Rf",
+    "post_build:prod": "cp public/manifest.json dist/ & cp public/images dist/ -Rf",
+    "serve": "serve -s dist"
   },
   "keywords": [
     "react",
     "node"
   ],
-  "author": "",
+  "author": "Hazrat Ali <iloveyii@yahoo.com>",
   "license": "MIT",
   "dependencies": {
     "react": "^16.13.1",
