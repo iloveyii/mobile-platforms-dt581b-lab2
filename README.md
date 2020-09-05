@@ -36,6 +36,9 @@ We will use Ubuntu as operating system for all installations below.
    * Create a directory structure e.g lab2/react, and lab2/node
    * Make it an npm repo `npm init -y`, run this inside both directories ie react, node.
    * Create a README.md file at root directory.
+   * REACT
+       * CD to react
+       * Install react `npm i --save react react-dom`
    
 ## NODEMON
    * `npm i -g nodemon`
@@ -136,11 +139,15 @@ We will use Ubuntu as operating system for all installations below.
    
      
 ## RUN THE APP
-   * Clone the repo
-     `git clone https://github.com/iloveyii/mobile-platforms-dt581b.git`
-   * CD to directory
-     `cd mobile-platforms-dt581b`
-   * Compile using webpack and babel
-     `npm run dev`
-   * Run the app, this command will open a browser window. Open console in dev tools to see result.
-     `npm start`
+   * REACT 
+       * Clone the repo
+         `git clone https://github.com/iloveyii/mobile-platforms-dt581b-lab2.git`
+       * CD to directory
+         `cd mobile-platforms-dt581b-lab2`
+       * Compile using webpack and babel
+         `npm run dev`
+       * Run the app, this command will open a browser window. Open console in dev tools to see result.
+         `npm start`
+   * NODE
+       * Clone the repo (if not done above)
+         `git clone https://github.com/iloveyii/mobile-platforms-dt581b-lab2.git`
