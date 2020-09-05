@@ -45,6 +45,7 @@ We will use Ubuntu as operating system for all installations below.
    * Add a webpack config file `webpack.config.js`
    * Add index.html, manifest.json, images
    * Add package.json scripts commands i.e start, build, serve
+   * Add babel config file `.babelrc`
    
    
 ## BABEL
