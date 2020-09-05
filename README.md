@@ -36,13 +36,12 @@ We will use Ubuntu as operating system for all installations below.
    * Create a directory structure e.g lab2/react, and lab2/node
    * Make it an npm repo `npm init -y`, run this inside both directories ie react, node.
    * Create a README.md file at root directory.
-   * REACT
-       * CD to react
-       * Install react `npm i --save react react-dom`
-       * Install webpack `npm i --save-dev webpack webpack-cli webpack-dev-server`
    
-## NODEMON
-   * `npm i -g nodemon`
+## REACT
+   * CD to react
+   * Install react `npm i --save react react-dom`
+   * Install webpack `npm i --save-dev webpack webpack-cli webpack-dev-server`
+   * Install babel `npm i --save-dev babel-core babel-loader babel-preset-env babel-preset-react html-webpack-plugin`
    
 ## BABEL
    * `npm i --save-dev @babel/core @babel/preset-env babel-loader`
