@@ -41,12 +41,15 @@ We will use Ubuntu as operating system for all installations below.
    * CD to react
    * Install react `npm i --save react react-dom`
    * Install webpack `npm i --save-dev webpack webpack-cli webpack-dev-server`
-   * Install babel `npm i --save-dev babel-core babel-loader babel-preset-env babel-preset-react html-webpack-plugin`
+   * Install babel `npm i --save-dev @babel/core babel-loader @babel/preset-env @babel/preset-react html-webpack-plugin`
    * Add a webpack config file `webpack.config.js`
    * Add index.html, manifest.json, images
    * Add package.json scripts commands i.e start, build, serve
    * Add babel config file `.babelrc`
-   
+  
+#### Components
+   * Create a react component App.js
+   * Render App component in index.js
    
 ## BABEL
    * `npm i --save-dev @babel/core @babel/preset-env babel-loader`

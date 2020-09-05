@@ -4,9 +4,9 @@
   "description": "Mobile platforms lab 2 - react",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --open --hot",
-    "_build:dev": "webpack --mode development",
-    "_build:prod": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open --port 4000 --compress --hot",
+    "_build:dev": "webpack --mode development --progress",
+    "_build:prod": "webpack --mode production --progress",
     "build": "npm run _build:prod",
     "post_build:dev": "cp public/manifest.json dist/ & cp public/images dist/ -Rf",
     "post_build:prod": "cp public/manifest.json dist/ & cp public/images dist/ -Rf",
@@ -23,10 +23,10 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
     "html-webpack-plugin": "^4.4.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
