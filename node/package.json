@@ -1,0 +1,12 @@
+{
+  "name": "lab2-node",
+  "version": "1.0.0",
+  "description": "Mobile platforms lab 2 - node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["mongodb", "express", "node"],
+  "author": "",
+  "license": "ISC"
+}
