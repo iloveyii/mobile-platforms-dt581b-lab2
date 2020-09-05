@@ -39,6 +39,7 @@ We will use Ubuntu as operating system for all installations below.
    * REACT
        * CD to react
        * Install react `npm i --save react react-dom`
+       * Install webpack `npm i --save-dev webpack webpack-cli webpack-dev-server`
    
 ## NODEMON
    * `npm i -g nodemon`
