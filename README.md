@@ -42,7 +42,7 @@ We will use Ubuntu as operating system for all installations below.
    * Install react `npm i --save react react-dom`
    * Install webpack `npm i --save-dev webpack webpack-cli webpack-dev-server`
    * Install babel `npm i --save-dev babel-core babel-loader babel-preset-env babel-preset-react html-webpack-plugin`
-   
+   * Add a webpack config file `webpack.config.js`
 ## BABEL
    * `npm i --save-dev @babel/core @babel/preset-env babel-loader`
    * `npm i --save-dev  @babel/runtime core-js@3`
