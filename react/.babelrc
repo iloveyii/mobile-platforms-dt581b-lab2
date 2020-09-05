@@ -14,5 +14,7 @@
       }
     ],
     "@babel/react"
+  ],
+  "plugins": [
   ]
 }
