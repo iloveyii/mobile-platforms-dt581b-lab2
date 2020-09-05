@@ -8,9 +8,9 @@ DT581B - Preparation - Lab 2
 
 HKR                   |  Mobile Platforms
 :-------------------------:|:-------------------------:
-![hkr](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/public/images/hkr.png)  |  ![DT581B](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/public/images/dt581b.png)
-![mongo](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/public/images/mongodb.png)  |  ![express](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/public/images/expressjs.png)
-![react](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/public/images/reactjs.png)  |  ![node](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/public/images/nodejs.png)
+![hkr](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/react/blob/master/public/images/hkr.png)  |  ![DT581B](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/react/blob/master/public/images/dt581b.png)
+![mongo](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/react/blob/master/public/images/mongodb.png)  |  ![express](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/react/blob/master/public/images/expressjs.png)
+![react](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/react/blob/master/public/images/reactjs.png)  |  ![node](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/react/blob/master/public/images/nodejs.png)
   
 
 [DEMO LAB 1](https://mobile-platforms-lab1.web.app/)
