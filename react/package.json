@@ -10,7 +10,8 @@
     "build": "npm run _build:prod",
     "post_build:dev": "cp public/manifest.json dist/ & cp public/images dist/ -Rf",
     "post_build:prod": "cp public/manifest.json dist/ & cp public/images dist/ -Rf",
-    "serve": "serve -s dist"
+    "serve": "serve -s dist",
+    "browserslist": "browserslist 'last 1 version, >1%' "
   },
   "keywords": [
     "react",

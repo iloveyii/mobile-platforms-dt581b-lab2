@@ -46,6 +46,8 @@ We will use Ubuntu as operating system for all installations below.
    * Add index.html, manifest.json, images
    * Add package.json scripts commands i.e start, build, serve
    * Add babel config file `.babelrc`
+   * Install backward compatibility `npm i --save @babel/polyfill`
+   * Install browserslist for supported browsers `npm i --save-dev browserslist`
   
 #### Components
    * Create a react component App.js
