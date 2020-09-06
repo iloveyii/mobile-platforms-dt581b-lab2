@@ -1,5 +1,6 @@
 import React from 'react';
 import {Header, Footer} from '../Layouts';
+import Temperature from '../Temperature';
 
 
 class App extends React.Component {
@@ -8,6 +9,7 @@ class App extends React.Component {
             <>
                 <Header/>
                 <h1>My React App</h1>
+                <Temperature/>
                 <Footer/>
             </>
         )
