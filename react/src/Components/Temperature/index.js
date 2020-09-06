@@ -5,7 +5,7 @@ import Right from './Right';
 import {temperatures} from "../../constants/mock";
 
 
-const api = 'http://localhost:6600/api/v1/temperatures';
+const api = 'http://softhem.se:4000/api/v1/temperatures';
 
 class Temperature extends React.Component {
     constructor(props) {
