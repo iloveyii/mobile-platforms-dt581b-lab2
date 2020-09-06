@@ -13,7 +13,7 @@ HKR                   |  Mobile Platforms
 ![react](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/react/public/images/reactjs.png)  |  ![node](https://github.com/iloveyii/mobile-platforms-dt581b-lab2/blob/master/react/public/images/nodejs.png)
   
 
-[DEMO LAB 1](https://mobile-platforms-lab2.web.app/)
+[DEMO LAB 2](https://mobile-platforms-lab2.web.app/)
 
 
 # INSTALLATION
