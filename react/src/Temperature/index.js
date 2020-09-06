@@ -25,6 +25,7 @@ class Temperature extends React.Component {
     updateActiveUnit = activeUnit => {
         const {temperatures} = this.state;
         const index = temperatures.findIndex(unit => unit.unit_id === activeUnit.unit_id);
+        if(activeUnit.temperature < -3 || activeUnit.temperature > 3) activeUnit.temperature = 0;
         if (index !== -1) {
             temperatures[index] = activeUnit;
         } else {
