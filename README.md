@@ -53,7 +53,12 @@ We will use Ubuntu as operating system for all installations below.
 #### Components
    * Create a react component App.js
    * Render App component in index.js
-   
+ 
+#### Material UI
+   * Install material ui `npm i --save @material-ui/core`
+   * Install material ui icons `npm i --save @material-ui/icons`
+ 
+ 
 ## BABEL
    * `npm i --save-dev @babel/core @babel/preset-env babel-loader`
    * `npm i --save-dev  @babel/runtime core-js@3`
