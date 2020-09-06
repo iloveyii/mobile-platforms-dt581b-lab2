@@ -86,7 +86,7 @@ class TableComponent extends React.Component {
                                 </TableCell>
                                 <TableCell align="right"> {row.unit_id}</TableCell>
                                 <TableCell align="right">{row.temperature}</TableCell>
-                                <TableCell align="right">{row.timestamp}</TableCell>
+                                <TableCell align="right">{new Date(row.timestamp).toLocaleDateString()} - {new Date(row.timestamp).toLocaleTimeString()} </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
