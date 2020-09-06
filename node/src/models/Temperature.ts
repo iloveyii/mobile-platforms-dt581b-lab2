@@ -9,7 +9,7 @@ type TemperatureT = {
     timestamp: number;
 };
 
-const COLLECTION = "temperatures";
+const COLLECTION = "units";
 
 class Temperature extends Mongo {
     constructor(database: Database, private product?: TemperatureT) {
