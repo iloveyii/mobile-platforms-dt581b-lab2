@@ -58,7 +58,12 @@ We will use Ubuntu as operating system for all installations below.
    * Install material ui `npm i --save @material-ui/core`
    * Install material ui icons `npm i --save @material-ui/icons`
  
- 
+
+## NODE 
+   * CD to node `cd node`
+   * Install `dotenv express express-session`
+   * Create tslint.json and tsconfig.json files 
+
 ## BABEL
    * `npm i --save-dev @babel/core @babel/preset-env babel-loader`
    * `npm i --save-dev  @babel/runtime core-js@3`
