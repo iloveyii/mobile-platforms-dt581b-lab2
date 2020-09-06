@@ -48,7 +48,7 @@ We will use Ubuntu as operating system for all installations below.
    * Add babel config file `.babelrc`
    * Install backward compatibility `npm i --save @babel/polyfill`
    * Install browserslist for supported browsers `npm i --save-dev browserslist`
-   * To reduce bundle size by dividing it into chunks `npm i --save-dev @babel/plugin-proposal-dynamic-import`
+   * To reduce bundle size by dividing it into chunks `npm i --save-dev @babel/plugin-proposal-dynamic-import`, (optional)
   
 #### Components
    * Create a react component App.js
