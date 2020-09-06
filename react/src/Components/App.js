@@ -8,7 +8,7 @@ class App extends React.Component {
         return (
             <>
                 <Header/>
-                <h1>My React App</h1>
+                <h1>Temperature Units</h1>
                 <Temperature/>
                 <Footer/>
             </>
