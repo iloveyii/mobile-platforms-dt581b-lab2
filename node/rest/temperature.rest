@@ -1,0 +1,49 @@
+
+### ----------------------------------
+### Controller API
+### ----------------------------------
+
+###
+// Get all temperatures
+GET http://localhost:6600/api/v1/temperatures
+Content-Type: application/json
+
+
+###
+// Get a temperature
+GET http://localhost:6600/api/v1/temperatures/5f019efc2a7003554cdd3a80
+Content-Type: application/json
+
+
+###
+// Create a temperature unit
+POST http://localhost:6600/api/v1/temperatures
+Content-Type: application/json
+
+{
+  "temperature": {
+    "unit_id": "Unit 01",
+    "temperature": "3",
+    "timestamp": ""
+  }
+}
+
+
+###
+// Delete a temperatue
+DELETE http://localhost:6600/api/v1/temperatures/5f019efc2a7003554cdd3a80
+Content-Type: application/json
+
+
+###
+// Update a temperature
+PUT http://localhost:6600/api/v1/temperatures/5f019efc2a7003554cdd3a80
+Content-Type: application/json
+
+{
+  "temperature": {
+    "unit_id": "Unit 01",
+    "temperature": "2",
+    "timestamp": ""
+  }
+}

@@ -1,20 +1,87 @@
 {
-  "name": "lab2-node",
+  "name": "node-server-lab2",
   "version": "1.0.0",
-  "description": "Mobile platforms lab 2 - node",
-  "main": "index.js",
+  "description": "Node server for lab 2 - mobile platforms",
+  "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-server": "npm run build-ts && npm run tslint",
+    "build-ts": "tsc",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "nodemon server.ts ",
+    "dev": "nodemon server.ts && npm run tslint",
+    "db:reset": "ts-node src/models/Mongo_reset.ts"
   },
   "keywords": [
-    "mongodb",
-    "express",
-    "node"
+    "node",
+    "ts",
+    "tslint",
+    "yarn"
   ],
-  "author": "",
+  "author": "Ali",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.0",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "concurrently": "^5.2.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express-session": "^1.17.1"
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "express-fileupload": "^1.2.0",
+    "express-session": "^1.17.1",
+    "fs": "0.0.1-security",
+    "glob": "^7.1.6",
+    "helmet": "^4.0.0",
+    "http": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mongodb": "^3.5.9",
+    "morgan": "^1.10.0",
+    "node-input-validator": "^4.2.1",
+    "node-tsc": "0.0.14",
+    "react-barcode": "^1.4.0",
+    "ts-node": "^8.10.2",
+    "tsc": "^1.20150623.0",
+    "tsc-node": "0.0.3",
+    "tslint": "^6.1.2"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/body-parser": "^1.19.0",
+    "@types/compression": "^1.7.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/ejs": "^3.0.4",
+    "@types/es6-promise": "^3.3.0",
+    "@types/express": "^4.17.6",
+    "@types/express-ejs-layouts": "^2.3.2",
+    "@types/glob": "^7.1.3",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongodb": "^3.5.25",
+    "@types/morgan": "^1.9.1",
+    "@types/node": "^14.0.13",
+    "@types/validator": "^13.0.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "cross-env": "^7.0.2",
+    "jest": "^26.1.0",
+    "mocha": "^8.0.1",
+    "nodemon": "^2.0.4",
+    "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2",
+    "typescript": "^3.9.5"
+  },
+  "_moduleAliases": {
+    "@sequelize": "sequelize/src"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
