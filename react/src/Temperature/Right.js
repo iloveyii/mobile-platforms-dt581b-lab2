@@ -56,6 +56,11 @@ class Right extends React.Component {
                             id="temperature"
                             label="Temp"
                             type="number"
+                            InputProps={{
+                                inputProps: {
+                                    max: 3, min: -3
+                                }
+                            }}
                             value={activeUnit.temperature}
                             onChange={this.handleChange}
                             InputLabelProps={{
