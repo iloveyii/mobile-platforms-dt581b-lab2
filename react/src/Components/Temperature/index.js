@@ -5,18 +5,19 @@ import Right from './Right';
 import {temperatures} from "../../constants/mock";
 
 
-const api = 'http://softhem.se:4000/api/v1/temperatures';
+const api = 'http://localhost:5000/api/v1/temperatures';
+const clearUnit = {
+    unit_id: '',
+    temperature: '',
+    timestamp: ''
+};
 
 class Temperature extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             temperatures,
-            activeUnit: {
-                unit_id: '',
-                temperature: '',
-                timestamp: ''
-            }
+            activeUnit: clearUnit
         }
     }
 
@@ -105,11 +106,7 @@ class Temperature extends React.Component {
             temperatures.push(activeUnit);
             this.saveData(activeUnit, 'POST');
         }
-        activeUnit = {
-            unit_id: '',
-            temperature: '',
-            timestamp: ''
-        };
+        activeUnit = clearUnit;
         this.setState({temperatures, activeUnit})
     };
 
@@ -118,11 +115,7 @@ class Temperature extends React.Component {
         temperatures = temperatures.filter(unit => unit.unit_id !== activeUnit.unit_id);
         this.deleteUnit(activeUnit);
         this.setState({
-            temperatures, activeUnit: {
-                unit_id: '',
-                temperature: '',
-                timestamp: ''
-            }
+            temperatures, activeUnit: clearUnit
         });
         console.log(temperatures)
     };
