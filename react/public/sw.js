@@ -28,7 +28,7 @@ self.addEventListener('activate', function (event) {
 
 self.addEventListener('fetch', function (event) {
     if (event.request.url.includes('api/v1')) {
-        console.log('DATA PART from online : ', event.request.url);
+        console.log('DATA METHOD PART from online METHOD : ', event.request.method);
         event.respondWith(
             fetch(event.request.url)                                                        // DATA - ONLINE FETCH
                 .then(response => {
@@ -37,31 +37,66 @@ self.addEventListener('fetch', function (event) {
                     responseClone.json()
                         .then(data => {
                             idb.connect(DB_NAME)
-                                .then(db => db.create('temperatures', data))
+                                .then(db => db.update('temperatures', data))
                         })
                     return response;
                 })
                 .catch(error => {                                                   // DATA - OFFLINE IDB
-                    console.log('DATA fetch error');
+                    console.log('DATA fetch error', error);
                     const idb = new Database();
-                    idb.connect(DB_NAME)
-                        .then(db => db.read('temperatures'))
-                        .then(data => console.log(data));
+                    if (event.request.method === 'GET') {
+                        return idb.connect(DB_NAME)
+                            .then(db => db.read('temperatures'))
+                            .then(data => {
+                                console.log('DATA fetch error', data[0]);
+                                return new Response(JSON.stringify(data[0]))
+                            });
+                    }
+
+                    if (event.request.method === 'POST') {
+                        return idb.connect(DB_NAME)
+                            .then(db => db.read('temperatures'))
+                            .then(data => {
+                                const d = data[0];
+                                event.request.json()
+                                    .then(jsonData => {
+                                        d.data.push(jsonData.unit);
+                                        console.log('DATA fetch error in POST', d);
+                                        idb.connect(DB_NAME)
+                                            .then(db => db.update('temperatures', d))
+                                            .then(() => new Response(JSON.stringify(d)))
+                                        return new Response(JSON.stringify(d))
+                                    });
+                                return new Response(JSON.stringify(d))
+                            });
+                    }
+
                 })
         );
     } else {
         console.log('ASSET PART from online : ', event.request.url);
         event.respondWith(
-                fetch(event.request)
-                    .then(function (response) {
-                        caches.open(DYNAMIC_CACHE_NAME)
-                            .then(function (cache) {
-                                cache.put(event.request.url, response.clone());
+            caches.match(event.request)
+                .then(response => {
+                    if (response) {
+                        return response;
+                    } else {
+
+                        return fetch(event.request)
+                            .then(response => {
+                                caches.open(DYNAMIC_CACHE_NAME)
+                                    .then(cache => {
+                                        cache.put(event.request.url, response.clone());
+                                        return response.clone();
+                                    })
+                                    .then(() => response.clone())
                                 return response.clone();
                             })
-                            .then(()=> response.clone())
-                        return response.clone();
-                    })
+                            .catch(error => {
+                                console.log('ASSET error ', error);
+                            })
+                    }
+                })
         )
     }
 });

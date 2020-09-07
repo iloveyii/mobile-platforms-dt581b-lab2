@@ -54,7 +54,7 @@ class Database {
 
     create(storeName, data) {
         const self = this;
-
+        console.log('IDB create ', data);
         return new Promise(function (resolve, reject) {
             // Check if store exist
             self.createStoreIfNotExist(storeName);
@@ -62,8 +62,14 @@ class Database {
             const transaction = self._db.transaction(storeName, 'readwrite');
             const store = transaction.objectStore(storeName);
             const request = store.add(data, 1);
-            request.oncomplete = e => resolve(self);
-            request.onerror = reject;
+            request.oncomplete = e => {
+                console.log('IDB create success', e);
+                return resolve(self);
+            };
+            request.onerror = e => {
+                console.log('IDB create error ', e);
+                return reject(e);
+            }
         });
     }
 
@@ -107,8 +113,14 @@ class Database {
             } else {
                 request = store.add(data, 1);
             }
-            request.oncomplete = e => resolve(self);
-            request.onerror = reject;
+            request.oncomplete = e => {
+                console.log('IDB update success', e);
+                return resolve(self);
+            };
+            request.onerror = e => {
+                console.log('IDB update error ', e);
+                return reject(e);
+            }
         });
     }
 
