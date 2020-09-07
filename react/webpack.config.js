@@ -5,10 +5,10 @@ module.exports = {
     entry: './src/index.js',                    // Location of main js file
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'js/bundle.js'                // Where the bundle file should be saved
+        filename: 'js/bundle.js',               // Where the bundle file should be saved
     },
-    devServer: {
-        contentBase: './dist'                   // Content root path
+    devServer: {                                // Content root path
+        contentBase: path.resolve(__dirname, 'public')
     },
     module: {
         rules: [
