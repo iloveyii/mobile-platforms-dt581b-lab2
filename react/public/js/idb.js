@@ -124,7 +124,8 @@ class Database {
         })
     }
 }
-const database = new Database();
-database.connect('temperature_units').then(db => db.read('temperatures')).then(data => console.log(data));
-database.connect('temperature_units').then(db => db.create('temperatures', {unit_id: 'unit 00',  temperature: -1}));
-database.connect('temperature_units').then(db => db.delete('temperatures', {unit_id: 'unit 00'}));
+
+// const database = new Database();
+// database.connect('temperature_units').then(db => db.read('temperatures')).then(data => console.log(data));
+// database.connect('temperature_units').then(db => db.create('temperatures', {unit_id: 'unit 00',  temperature: -1}));
+// database.connect('temperature_units').then(db => db.delete('temperatures', {unit_id: 'unit 00'}));
