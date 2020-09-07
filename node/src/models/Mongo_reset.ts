@@ -9,7 +9,7 @@ import Condition from "./base/Condition";
 async function reset_db() {
     const condition1: ConditionI = new Condition({where: {}});
     const basename = path.basename(__filename);
-    const database = new Database("shop");
+    const database = new Database("temperature_units");
 
     fs
         .readdirSync(__dirname)
@@ -18,7 +18,7 @@ async function reset_db() {
         })
         .forEach(async (file) => {
             const basename = path.parse(file).name;
-            const file_path = path.resolve(__dirname, "./" + basename); // Provide relative path
+            const file_path = path.resolve(__dirname, "./" + basename); // Provide absolute path
             const Model = await require(file_path).default;
             const model = await new Model(database, undefined);
             model.deleteMany && model.deleteMany(condition1);

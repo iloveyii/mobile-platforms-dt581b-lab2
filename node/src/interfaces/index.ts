@@ -1,4 +1,4 @@
-import { ConditionT, UserT } from "../types";
+import { ConditionT } from "../types";
 
 
 // -------------------------------------------------------------

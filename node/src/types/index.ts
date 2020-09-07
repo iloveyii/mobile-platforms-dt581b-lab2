@@ -25,9 +25,9 @@ export type ResponseT2 = {
 
 export type ActionT = {
     id: string,
-    type: string, // create read update delete
-    form: FormT[], // list
-    alert: AlertT[], // type: info, danger, warning, success
+    type: string,       // create read update delete
+    form: FormT[],      // list
+    alert: AlertT[],    // type: info, danger, warning, success
 };
 
 export type FormT = {

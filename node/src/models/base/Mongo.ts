@@ -1,9 +1,8 @@
-import { ResponseT, UserT } from "../../types";
-import { ConditionI, ModelI } from "../../interfaces";
-import { Database } from "./Database";
-import Condition from "./Condition";
-import { Validator } from "node-input-validator";
-import { ObjectId } from "mongodb";
+import {ResponseT} from "../../types";
+import {ConditionI, ModelI} from "../../interfaces";
+import {Database} from "./Database";
+import {Validator} from "node-input-validator";
+import {ObjectId} from "mongodb";
 
 
 // --------------------------------------------------------------
@@ -17,7 +16,6 @@ class Mongo implements ModelI {
     };
 
     constructor(protected database: Database, private readonly collection: string, public data: any) {
-        // console.log("Mongo Collection : ", collection, data);
     }
 
     // ----------------------------------
@@ -26,8 +24,7 @@ class Mongo implements ModelI {
     async create(): Promise<any> {
         const db = await this.database.db();
         const collection = await db.collection(this.collection);
-        // Remove any _id - its already in condition
-        delete this.data["_id"];
+        delete this.data["_id"]; // Remove any _id - its already in condition
         const model = await collection.insertOne(this.data);
         this.setResponse(
             true,
@@ -45,13 +42,6 @@ class Mongo implements ModelI {
         }
         const db = await this.database.db();
         const collection = await db.collection(this.collection);
-        // Remove any _id - its already in condition
-        // console.log("createMany ", JSON.stringify(this.data));
-        // try {
-        //     this.data.map(async (data: any) => await collection.insertOne(data));
-        // } catch (e) {
-        //     console.log(this.data);
-        // }
         this.data.map(async (data: any) => data._id = new ObjectId(data._id));
         const model = await collection.insertMany(this.data);
         this.setResponse(
@@ -163,29 +153,4 @@ class Mongo implements ModelI {
     }
 }
 
-async function test_db() {
-    const database = new Database("shop");
-    const user: UserT | undefined = {email: "em@il.com", password: "p@$$w0rd"};
-    const model = await new Mongo(database, "users", undefined);
-    const condition1: ConditionI = new Condition({where: {email: "em@il.com"}});
-    const condition2: ConditionI = new Condition({where: {email: "em@ilupdated.com"}});
-
-    console.log("----------------CREATE------------------");
-    console.log((await model.create()).response.data.model);
-    console.log("----------------READ------------------");
-    console.log((await model.read(condition1)).response.data);
-    console.log("----------------UPDATE------------------");
-    console.log((await model.update(condition1)).response.data);
-    console.log("----------------DELETE------------------");
-    console.log((await model.delete(condition2)).response.data);
-}
-
-
-// test_db();
-
 export default Mongo;
-
-// const condition1: ConditionT = {where: {id: "5efbb5673ea71053ac4fc6ba", email: "em@il.com"}};
-//
-// const c = new Condition("mongodb", condition1);
-// console.log(c.get);

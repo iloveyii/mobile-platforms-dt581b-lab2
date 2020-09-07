@@ -9,7 +9,6 @@ const database = new Database("temperature_units");
 // @desc   Get all from Model
 // @route  GET /api/v1/temperatures
 export const getTemperatures = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("getTemperatures");
     const model = new Temperature(database, undefined);
     await model.read();
     return res.status(200).send(model.response);
@@ -24,7 +23,7 @@ export const getTemperature = async (req: Request, res: Response, next: NextFunc
     return res.status(200).send(model.response);
 };
 
-// @desc   Register/Create a Model
+// @desc   Create a Model
 // @route  POST /api/v1/temperatures
 export const createTemperature = async (req: Request, res: Response, next: NextFunction) => {
     console.log("Unit received :", req.body);
