@@ -17,7 +17,7 @@ async function clearOldCaches(version) {
     });
 }
 
-if (false && 'serviceWorker' in navigator) {
+if (true && 'serviceWorker' in navigator) {
     navigator.serviceWorker
         .register('/sw.js')
         .then(async function (event) {
