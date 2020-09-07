@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from "express";
-import { Database } from "../models/base/Database";
+import {Request, Response, NextFunction} from "express";
+import {Database} from "../models/base/Database";
 import Condition from "../models/base/Condition";
 import Temperature from "../models/Temperature";
-
+import {TemperatureT} from "../models/Temperature";
 
 const database = new Database("temperature_units");
 
@@ -27,8 +27,18 @@ export const getTemperature = async (req: Request, res: Response, next: NextFunc
 // @route  POST /api/v1/temperatures
 export const createTemperature = async (req: Request, res: Response, next: NextFunction) => {
     console.log("Unit received :", req.body);
-    const model = new Temperature(database, req.body.unit);
-    await model.create();
+    let model: any = {};
+    if (Array.isArray(req.body)) {
+        req.body.map(async (unit: TemperatureT) => {
+            console.log("Created ", unit);
+            model = new Temperature(database, unit);
+            await model.create();
+        })
+    } else {
+        model = new Temperature(database, req.body.unit);
+        await model.create();
+    }
+
     return res.status(201).send(model.response);
 };
 

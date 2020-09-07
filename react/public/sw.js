@@ -55,19 +55,26 @@ self.addEventListener('fetch', function (event) {
 
                     if (event.request.method === 'POST') {
                         return idb.connect(DB_NAME)
-                            .then(db => db.read('temperatures'))
+                            .then(db => db.read('temperatures_sync'))
                             .then(data => {
-                                const d = data[0];
+                                let d = data ? data[0] : {success: true, data: []};
                                 event.request.json()
                                     .then(jsonData => {
-                                        d.data.push(jsonData.unit);
+                                        const unit = jsonData.unit;
+                                        unit['sync_needed'] = true;
+                                        if (!d) {
+                                            d = {success: true, data: []};
+                                        }
+                                        d.data.push(unit);
                                         console.log('DATA fetch error in POST', d);
                                         idb.connect(DB_NAME)
-                                            .then(db => db.update('temperatures', d))
+                                            .then(db => db.update('temperatures_sync', d))
                                             .then(() => new Response(JSON.stringify(d)))
+                                        console.log('DATA POST response ', new Response(JSON.stringify(d)))
                                         return new Response(JSON.stringify(d))
                                     });
-                                return new Response(JSON.stringify(d))
+                                console.log('DATA POST response ', new Response(JSON.stringify(d)))
+                                return new Response(JSON.stringify({success: true, data: d}))
                             });
                     }
 
@@ -112,5 +119,20 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 self.addEventListener('sync', function (event) {
-    console.log('SYNC');
+    console.log('SYNC Started');
+    const idb = new Database();
+    idb.connect(DB_NAME)
+        .then(db => db.read('temperatures_sync'))
+        .then(data => {
+            console.log(data[0]);
+            return fetch('http://localhost:5000/api/v1/temperatures', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data[0].data)
+            })
+                .then(response => console.log(response))
+        });
 });

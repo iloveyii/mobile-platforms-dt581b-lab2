@@ -1,4 +1,4 @@
-const STORES = ['temperatures'];
+const STORES = ['temperatures', 'temperatures_sync'];
 
 class Database {
     _connected = false;

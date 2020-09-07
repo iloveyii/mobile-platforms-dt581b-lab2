@@ -2,7 +2,7 @@ import Mongo from "./base/Mongo";
 import { Database } from "./base/Database";
 
 
-type TemperatureT = {
+export type TemperatureT = {
     id?: string;
     unit_id: string;
     temperature: number;

@@ -24,7 +24,7 @@ class Mongo implements ModelI {
     async create(): Promise<any> {
         const db = await this.database.db();
         const collection = await db.collection(this.collection);
-        delete this.data["_id"]; // Remove any _id - its already in condition
+        this.data["_id"] && delete this.data["_id"]; // Remove any _id - its already in condition
         const model = await collection.insertOne(this.data);
         this.setResponse(
             true,
