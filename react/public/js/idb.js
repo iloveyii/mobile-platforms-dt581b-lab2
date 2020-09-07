@@ -73,6 +73,23 @@ class Database {
         });
     }
 
+    add_to_store_data = (storeName, data) => {
+        const self = this;
+        self.read(storeName)
+            .then(d => {
+                    console.log('add_to_store_data', d);
+                if(d && d.success) {
+                    d.data.push(data.form);
+                    console.log('add_to_store_data after push', d);
+                    return d;
+                } else {
+                    console.log('add_to_store_data no data', d, data);
+                    return { success: true, data: [data.form]}
+                }
+            })
+            .then((d) => self.update(storeName, d))
+    };
+
     read = (storeName) => {
         const self = this;
         return new Promise(function (resolve, reject) {
@@ -81,11 +98,12 @@ class Database {
             const keyRange = IDBKeyRange.lowerBound(0);
             const cursorRequest = store.openCursor(keyRange);
 
-            const data = [];
+            let data = {};
             cursorRequest.onsuccess = e => {
                 const result = e.target?.result;
                 if (result) {
-                    data.push(e.target.result.value);
+                    console.log('result ', result.value);
+                    data = (e.target.result.value); // get the last value
                     result.continue();
                 } else {
                     console.log('read data ', data);
