@@ -100,6 +100,19 @@ self.addEventListener('fetch', function (event) {
     console.log('dataFETCH ' + event.request.url);
     if (event.request.url.includes('api/v1')) {                                             // DATA
         const response1 = new Response(JSON.stringify({success: false, data: []}));
+        // switch(method)
+        // find verb
+        // get request body
+        // make fetch - if read save to idb
+        // return Response
+
+        // Catch
+        // switch(method) if read , from idb
+        // if other mark(req body data.type=create|update|delete) it in _sync using idb
+
+        // Update sync
+
+
         // const resp = await fetch(event.request.url);
         // const jsonData = await resp.json();
         // const strData = JSON.stringify(jsonData);
