@@ -35,7 +35,7 @@ export const createTemperature = async (req: Request, res: Response, next: NextF
             await model.create();
         })
     } else {
-        model = new Temperature(database, req.body.unit);
+        model = new Temperature(database, req.body.form);
         await model.create();
     }
 

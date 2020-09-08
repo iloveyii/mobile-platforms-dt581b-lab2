@@ -2,11 +2,20 @@ importScripts('/js/idb.js');
 
 
 const STATIC_FILES = [
-    '/',
+    '/',                                    // HTML
     '/index.html',
     '/offline.html',
+    '/manifest.json',
 
-    '/images/no-image.png'
+    '/images/favicon-32x32.png',            // PNG
+    '/images/android-chrome-192x192.png',
+    '/images/no-image.png',
+
+    '/js/idb.js',                           // JS
+    '/js/register.js',
+    '/js/bundle.js',
+    '/js/0.bundle.js',
+    '/js/1.bundle.js'
 ];
 const STATIC_CACHE_NAME = 'static-v1';
 const DYNAMIC_CACHE_NAME = 'dynamic-v1';
@@ -88,33 +97,27 @@ function get_data(event) {
 }
 
 self.addEventListener('fetch', function (event) {
-    if (event.request.url.includes('api/v1')) {
-        event.respondWith(get_data(event));
-    } else {
+    console.log('dataFETCH ' + event.request.url);
+    if (event.request.url.includes('api/v1')) {                                             // DATA
+        const response1 = new Response(JSON.stringify({success: false, data: []}));
+        // const resp = await fetch(event.request.url);
+        // const jsonData = await resp.json();
+        // const strData = JSON.stringify(jsonData);
+        // const response2 = new Response(strData);
+        console.log('dataFETCH with api v1 ' + event.request.url, response1);
+        event.respondWith(response1);
+    } else {                                                                                // ASSETS
         console.log('ASSET PART from online : ', event.request.url);
         event.respondWith(
-            caches.match(event.request)
+            caches.match(event.request.url)
                 .then(response => {
                     if (response) {
                         return response;
                     } else {
-
-                        return fetch(event.request)
-                            .then(response => {
-                                caches.open(DYNAMIC_CACHE_NAME)
-                                    .then(cache => {
-                                        cache.put(event.request.url, response.clone());
-                                        return response.clone();
-                                    })
-                                    .then(() => response.clone())
-                                return response.clone();
-                            })
-                            .catch(error => {
-                                console.log('ASSET error ', error);
-                            })
+                        console.log('Error in asset fetch ', event.request.url);
                     }
                 })
-        )
+        );
     }
 });
 
@@ -129,21 +132,21 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 self.addEventListener('sync', function (event) {
-    console.log('SYNC Started');
-    const idb = new Database();
-    idb.connect(DB_NAME)
-        .then(db => db.read('temperatures_sync'))
-        .then(data => {
-            console.log(data[0]);
-            if (!data || data[0]) return false;
-            return fetch('http://localhost:5000/api/v1/temperatures', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: data && data[0] ? JSON.stringify(data[0].data) : ''
-            })
-                .then(response => console.log(response))
-        });
+    // console.log('SYNC Started');
+    // const idb = new Database();
+    // idb.connect(DB_NAME)
+    //     .then(db => db.read('temperatures_sync'))
+    //     .then(data => {
+    //         console.log(data[0]);
+    //         if (!data || data[0]) return false;
+    //         return fetch('http://localhost:5000/api/v1/temperatures', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: data && data[0] ? JSON.stringify(data[0].data) : ''
+    //         })
+    //             .then(response => console.log(response))
+    //     });
 });

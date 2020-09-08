@@ -39,7 +39,7 @@ class Temperature extends React.Component {
     };
 
     saveData = (form, method) => {
-        fetch(api + (method === 'PUT' ? '/' + unit.id : ''), {
+        fetch(api + (method === 'PUT' ? '/' + form.id : ''), {
             method,
             headers: {
                 'Accept': 'application/json',
