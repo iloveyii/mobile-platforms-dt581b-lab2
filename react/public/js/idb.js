@@ -73,10 +73,11 @@ class Database {
         });
     }
 
-    add_to_store_data = (storeName, data) => {
+    add_to_store_sync_data = (storeName, data) => {
         const self = this;
         return new Promise(function (resolve, reject) {
-            return self.read(storeName)
+            const storeSync = storeName + '_sync';
+            return self.read(storeSync)
                 .then(d => {
                     console.log('add_to_store_data', d);
                     if (d && d.success) {
@@ -88,7 +89,7 @@ class Database {
                         return {success: true, data: [data.form]}
                     }
                 })
-                .then((d) => self.update(storeName, d))
+                .then((d) => self.update(storeSync, d))
                 .then(() => resolve({success: true, data: [data.form]}))
         })
 

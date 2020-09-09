@@ -96,10 +96,44 @@ function get_data(event) {
     })
 }
 
+const handlePost = (event) => {
+    return new Promise(function (resolve, reject) {
+        const verb = (event.request.url.split('/')).pop();
+        const idb = new Database();
+        let response_data = '', request_data = '';
+        return event.request.json()
+            .then(data => request_data = data)
+            .then(() =>
+                fetch(event.request.url, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(request_data)
+                })
+            )
+            .then(response => response.json())
+            .then(data => response_data = data)
+            .then(() => resolve(data))
+            .catch(error => {
+                console.log('POST ERR ', error);
+                idb.connect(DB_NAME)
+                    .then(db => db.add_to_store_sync_data(verb, request_data))
+                    .then(response => resolve(new Response(JSON.stringify(response))))
+            });
+    })
+}
+
 self.addEventListener('fetch', function (event) {
     console.log('dataFETCH ' + event.request.url);
     if (event.request.url.includes('api/v1')) {                                             // DATA
-        const response1 = new Response(JSON.stringify({success: false, data: []}));
+        const method = event.request.method;
+
+        switch (method) {
+            case 'POST':
+                return event.respondWith(handlePost(event))
+        }
         // switch(method)
         // find verb
         // get request body
@@ -117,8 +151,9 @@ self.addEventListener('fetch', function (event) {
         // const jsonData = await resp.json();
         // const strData = JSON.stringify(jsonData);
         // const response2 = new Response(strData);
-        console.log('dataFETCH with api v1 ' + event.request.url, response1);
-        event.respondWith(response1);
+        // const response1 = new Response(JSON.stringify({success: false, data: []}));
+        // console.log('dataFETCH with api v1 ' + event.request.url, response1);
+        // event.respondWith(response1);
     } else {                                                                                // ASSETS
         console.log('ASSET PART from online : ', event.request.url);
         event.respondWith(
