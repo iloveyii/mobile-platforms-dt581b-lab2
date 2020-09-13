@@ -6,6 +6,7 @@ const STATIC_FILES = [
     '/index.html',
     '/offline.html',
     '/manifest.json',
+    '/version.json',
 
     '/images/favicon-32x32.png',            // PNG
     '/images/android-chrome-192x192.png',
@@ -161,12 +162,47 @@ const handleDelete = (event, VERB, id) => {
     })
 };
 
+const handleRead = (event, VERB, id) => {
+    return new Promise(function (resolve, reject) {
+        const idb = new Database();
+        let response_data;
+        return fetch(event.request.url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then((data) => {
+                response_data = data;
+                console.log('read then ', response_data);
+                resolve(new Response(JSON.stringify(data)))
+            })
+            .then(() => idb.connect(DB_NAME))
+            .then(db => db.update(VERB, response_data))
+            .then(() => {
+                console.log('read then ', response_data);
+                resolve(new Response(JSON.stringify(response_data)))
+            })
+            .catch(error => {
+                console.log('READ ERR ', error);
+                idb.connect(DB_NAME)
+                    .then(db => db.read(VERB))
+                    .then(data => {
+                        console.log('Returning response from failed GET ', data);
+                        resolve(new Response(JSON.stringify(data)))
+                    })
+            });
+    })
+};
+
 self.addEventListener('fetch', function (event) {
     const URL = event.request.url;
     const URL_ARR = (event.request.url.split('/'));
     const METHOD = event.request.method;
     let VERB = '';
-    console.log('dataFETCH ' + URL);
+    // console.log('dataFETCH ' + URL);
     if (URL.includes('api/v1')) {                                      // DATA
         switch (METHOD) {
             case 'POST':
@@ -181,6 +217,9 @@ self.addEventListener('fetch', function (event) {
                 console.log('Deleting unit with id ', id);
                 VERB = URL_ARR.pop();
                 return event.respondWith(handleDelete(event, VERB, id));          // event, method, verb
+            case 'GET':
+                VERB = URL_ARR.pop();
+                return event.respondWith(handleRead(event, VERB, null));          // event, method, verb
         }
         // switch(method)
         // find verb
@@ -203,14 +242,15 @@ self.addEventListener('fetch', function (event) {
         // console.log('dataFETCH with api v1 ' + event.request.url, response1);
         // event.respondWith(response1);
     } else {                                                                                // ASSETS
-        console.log('ASSET PART from online : ', event.request.url);
+        // console.log('ASSET PART from online : ', event.request.url);
         event.respondWith(
             caches.match(event.request.url)
                 .then(response => {
                     if (response) {
                         return response;
                     } else {
-                        console.log('Error in asset fetch ', event.request.url);
+                        // console.log('Error in asset fetch ', event.request.url);
+                        return new Response('no data')
                     }
                 })
         );

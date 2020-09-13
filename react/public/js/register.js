@@ -21,7 +21,7 @@ if (true && 'serviceWorker' in navigator) {
     navigator.serviceWorker
         .register('/sw2.js')
         .then(async function (event) {
-            console.log('Service worker registered sw2', event.scope);
+            // console.log('Service worker registered sw2', event.scope);
             await setCurrentVersion();
         }).catch(function (error) {
         console.log('Error in SW : ', error);

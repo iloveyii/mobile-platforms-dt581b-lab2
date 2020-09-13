@@ -79,14 +79,15 @@ class TableComponent extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {temperatures.map((row, i) => (
+                        {Array.isArray(temperatures) && temperatures.map((row, i) => (
                             <TableRow key={i + 1} onClick={() => this.props.setActiveUnit(row)}>
                                 <TableCell component="th" scope="row">
                                     {i + 1}
                                 </TableCell>
                                 <TableCell align="right"> {row.unit_id}</TableCell>
                                 <TableCell align="right">{row.temperature}</TableCell>
-                                <TableCell align="right">{new Date(row.timestamp).toLocaleDateString()} - {new Date(row.timestamp).toLocaleTimeString()} </TableCell>
+                                <TableCell
+                                    align="right">{new Date(row.timestamp).toLocaleDateString()} - {new Date(row.timestamp).toLocaleTimeString()} </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

@@ -17,13 +17,13 @@ class Database {
 
                 // Migrations
                 request.onupgradeneeded = e => {
-                    console.log('Upgrade needed ', e.target.result);
+                    // console.log('Upgrade needed ', e.target.result);
                     self._db = e.target.result;
                     STORES.map(store => self.createStoreIfNotExist(store));
                 };
 
                 request.onsuccess = e => {
-                    console.log('DB connect request success ', e.target.result);
+                    // console.log('DB connect request success ', e.target.result);
                     self._connected = true;
                     self._db = e.target.result;
                     resolve(self);
@@ -44,17 +44,17 @@ class Database {
     createStoreIfNotExist = (storeName) => {
         if (storeName) {
             if (!this._db.objectStoreNames.contains(storeName)) {
-                console.log('createStoreIfNotExist ', storeName);
+                // console.log('createStoreIfNotExist ', storeName);
                 this._db.createObjectStore(storeName);
             } else {
-                console.log('createStoreIfNotExist ', this._db.objectStoreNames);
+                // console.log('createStoreIfNotExist ', this._db.objectStoreNames);
             }
         }
     };
 
     create(storeName, data) {
         const self = this;
-        console.log('IDB create ', data);
+        // console.log('IDB create ', data);
         return new Promise(function (resolve, reject) {
             // Check if store exist
             self.createStoreIfNotExist(storeName);
@@ -153,7 +153,7 @@ class Database {
 
     update(storeName, data) {
         const self = this;
-
+        console.log('IDB update data', data);
         return new Promise(async function (resolve, reject) {
             // Check if store exist
             self.createStoreIfNotExist(storeName);
