@@ -39,9 +39,10 @@ class Temperature extends React.Component {
     };
 
     saveData = (form, method) => {
-        let id = ''; form.method = 'POST';
-        if(method === 'PUT') {
-            id =  '/' + (form.id ? form.id : form.unit_id);
+        let id = '';
+        form.method = 'POST';
+        if (method === 'PUT') {
+            id = '/' + (form.id ? form.id : form.unit_id);
             form.method = 'PUT';
         }
         fetch(api + id, {
@@ -71,7 +72,8 @@ class Temperature extends React.Component {
     };
 
     deleteUnit = (unit) => {
-        fetch(api + '/' + unit.id, {
+        const id = unit.id ? unit.id : unit.unit_id;
+        fetch(api + '/' + id, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -85,7 +87,7 @@ class Temperature extends React.Component {
             })
             .then(data => {
                 if (data.success) {
-                    console.log('Deleted')
+                    console.log('Deleted', unit)
                 }
             })
             .catch(error => {

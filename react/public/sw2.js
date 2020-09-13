@@ -119,16 +119,47 @@ const handlePost = (event, METHOD, VERB) => {
                 console.log('POST ERR ', error);
                 idb.connect(DB_NAME)
                     .then(db => {
-                        db.add_to_store_sync_data(VERB, request_data);
+                        db.add_to_store_data(VERB + '_sync', request_data);
+                        db.add_to_store_data(VERB, request_data);
                         return request_data;
                     })
                     .then(data => {
-                        console.log('Returning response from failed POST ', data)
+                        console.log('Returning response from failed POST ', data);
                         resolve(new Response(JSON.stringify({success: true, data: [data.form]})))
                     })
             });
     })
-}
+};
+
+const handleDelete = (event, VERB, id) => {
+    return new Promise(function (resolve, reject) {
+        const idb = new Database();
+
+        return fetch(event.request.url, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then((data) => resolve(data))
+            .catch(error => {
+                console.log('DELETE ERR ', error);
+                idb.connect(DB_NAME)
+                    .then(db => {
+                        const request_data = {form: {id, method: 'DELETE'}};
+                        db.remove_from_store_data(VERB + '_sync', request_data);
+                        db.remove_from_store_data(VERB, request_data);
+                        return request_data;
+                    })
+                    .then(data => {
+                        console.log('Returning response from failed POST ', data);
+                        resolve(new Response(JSON.stringify({success: true, data})))
+                    })
+            });
+    })
+};
 
 self.addEventListener('fetch', function (event) {
     const URL = event.request.url;
@@ -136,7 +167,7 @@ self.addEventListener('fetch', function (event) {
     const METHOD = event.request.method;
     let VERB = '';
     console.log('dataFETCH ' + URL);
-    if (event.request.url.includes('api/v1')) {                                      // DATA
+    if (URL.includes('api/v1')) {                                      // DATA
         switch (METHOD) {
             case 'POST':
                 VERB = URL_ARR.pop();
@@ -145,7 +176,11 @@ self.addEventListener('fetch', function (event) {
                 VERB = URL_ARR.pop();
                 VERB = URL_ARR.pop();
                 return event.respondWith(handlePost(event, METHOD, VERB));          // event, method, verb
-
+            case 'DELETE':
+                const id = URL_ARR.pop();
+                console.log('Deleting unit with id ', id);
+                VERB = URL_ARR.pop();
+                return event.respondWith(handleDelete(event, VERB, id));          // event, method, verb
         }
         // switch(method)
         // find verb

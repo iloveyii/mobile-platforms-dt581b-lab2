@@ -73,11 +73,10 @@ class Database {
         });
     }
 
-    add_to_store_sync_data = (storeName, data) => {
+    add_to_store_data = (storeName, data) => {
         const self = this;
         return new Promise(function (resolve, reject) {
-            const storeSync = storeName + '_sync';
-            return self.read(storeSync)
+            return self.read(storeName)
                 .then(d => {
                     console.log('add_to_store_data', d);
                     if (d && d.success) {
@@ -89,7 +88,39 @@ class Database {
                         return {success: true, data: [data.form]}
                     }
                 })
-                .then((d) => self.update(storeSync, d))
+                .then((d) => self.update(storeName, d))
+                .then(() => resolve({success: true, data: [data.form]}))
+        })
+    };
+
+    remove_from_store_data = (storeName, data) => {
+        console.log('inside remove_from_store_data ', storeName, data);
+        const self = this;
+        return new Promise(function (resolve, reject) {
+            return self.read(storeName)
+                .then(d => {
+                    console.log('remove_from_store_data', d);
+                    if (d && d.success) {
+                        console.log('remove_from_store_data after push', d);
+                        d.data = d.data.filter(_data => _data.id !== data.form.id);
+                        // if sync then only add
+                        if (storeName.includes('_sync')) {
+                            d.data.push(data.form);
+                        }
+                        return {success: true, data: d.data}
+                    } else {
+                        console.log('remove_from_store_data no data', d, data);
+                        const _d = {success: true, data: []};
+                        if (storeName.includes('_sync')) {
+                            _d.data.push(data.form);
+                        }
+                        return _d;
+                    }
+                })
+                .then((d) => {
+                    console.log('inside remove_from_store_data , d for update', d);
+                    return self.update(storeName, d)
+                })
                 .then(() => resolve({success: true, data: [data.form]}))
         })
 
