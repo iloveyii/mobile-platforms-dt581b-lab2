@@ -36,7 +36,7 @@ export const createTemperature = async (req: Request, res: Response, next: NextF
         })
     } else {
         model = new Temperature(database, req.body.form);
-        await model.create();
+        await model.validate() && await model.create();
     }
 
     return res.status(201).send(model.response);
@@ -45,8 +45,19 @@ export const createTemperature = async (req: Request, res: Response, next: NextF
 // @desc   Update a Model
 // @route  UPDATE /api/v1/temperatures/:id
 export const updateTemperature = async (req: Request, res: Response, next: NextFunction) => {
-    const condition = new Condition({where: {id: req.params.id}});
-    const model = new Temperature(database, req.body.unit);
+    let where: any = {};
+    if (req.params.id && req.params.id !== "undefined") {
+        console.log('Updated by id', req.params.id);
+        where = {id: req.params.id}
+    } else if (req.body.form.unit_id) {
+        console.log('Updated by unit_id', req.body.form.unit_id);
+        where = {unit_id: req.params.unit_id}
+    } else {
+        console.log('Update fail');
+        return res.status(404).send({success: false, data: ["No record with id " + req.params.id]});
+    }
+    const condition = new Condition({where});
+    const model = new Temperature(database, req.body.form);
     await model.validate() && await model.update(condition);
     return res.status(200).send(model.response);
 };
@@ -54,8 +65,14 @@ export const updateTemperature = async (req: Request, res: Response, next: NextF
 // @desc   Delete Model
 // @route  DELETE /api/v1/temperatures/:id
 export const deleteTemperature = async (req: Request, res: Response, next: NextFunction) => {
-    const model = new Temperature(database, req.body.unit);
-    const condition = new Condition({where: {id: req.params.id}});
-    await model.delete(condition);
-    return res.status(200).send(model.response);
+    if (!req.params.id || req.params.id === 'undefined') {
+        console.log('Delete fail');
+        return res.status(404).send({success: false, data: ['No record with id ' + req.params.id]});
+    } else {
+        console.log('Delete pass', req.params.id === 'undefined');
+        const model = new Temperature(database, req.body.form);
+        const condition = new Condition({where: {id: req.params.id}});
+        await model.delete(condition);
+        return res.status(200).send(model.response);
+    }
 };

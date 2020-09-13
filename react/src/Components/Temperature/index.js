@@ -28,9 +28,9 @@ class Temperature extends React.Component {
                     return response.json();
                 }
             })
-            .then(data => {
-                if (data.success) {
-                    this.setState({temperatures: data.data})
+            .then(response => {
+                if (response.success) {
+                    this.setState({temperatures: response.data})
                 }
             })
             .catch(error => {
@@ -39,7 +39,12 @@ class Temperature extends React.Component {
     };
 
     saveData = (form, method) => {
-        fetch(api + (method === 'PUT' ? '/' + form.id : ''), {
+        let id = ''; form.method = 'POST';
+        if(method === 'PUT') {
+            id =  '/' + (form.id ? form.id : form.unit_id);
+            form.method = 'PUT';
+        }
+        fetch(api + id, {
             method,
             headers: {
                 'Accept': 'application/json',
@@ -52,9 +57,12 @@ class Temperature extends React.Component {
                     return response.json();
                 }
             })
-            .then(data => {
-                if (data.success) {
-                    console.log('Saved')
+            .then(response => {
+                if (response.success) {
+                    this.setState({temperatures, activeUnit: clearUnit});
+                    console.log('Saved');
+                } else {
+                    console.log('Saving ...', response)
                 }
             })
             .catch(error => {
@@ -106,8 +114,6 @@ class Temperature extends React.Component {
             temperatures.push(activeUnit);
             this.saveData(activeUnit, 'POST');
         }
-        activeUnit = clearUnit;
-        this.setState({temperatures, activeUnit})
     };
 
     deleteActiveUnit = activeUnit => {

@@ -96,16 +96,15 @@ function get_data(event) {
     })
 }
 
-const handlePost = (event) => {
+const handlePost = (event, METHOD, VERB) => {
     return new Promise(function (resolve, reject) {
-        const verb = (event.request.url.split('/')).pop();
         const idb = new Database();
         let response_data = '', request_data = '';
         return event.request.json()
             .then(data => request_data = data)
             .then(() =>
                 fetch(event.request.url, {
-                    method: 'POST',
+                    method: METHOD,
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -119,20 +118,34 @@ const handlePost = (event) => {
             .catch(error => {
                 console.log('POST ERR ', error);
                 idb.connect(DB_NAME)
-                    .then(db => db.add_to_store_sync_data(verb, request_data))
-                    .then(response => resolve(new Response(JSON.stringify(response))))
+                    .then(db => {
+                        db.add_to_store_sync_data(VERB, request_data);
+                        return request_data;
+                    })
+                    .then(data => {
+                        console.log('Returning response from failed POST ', data)
+                        resolve(new Response(JSON.stringify({success: true, data: [data.form]})))
+                    })
             });
     })
 }
 
 self.addEventListener('fetch', function (event) {
-    console.log('dataFETCH ' + event.request.url);
-    if (event.request.url.includes('api/v1')) {                                             // DATA
-        const method = event.request.method;
-
-        switch (method) {
+    const URL = event.request.url;
+    const URL_ARR = (event.request.url.split('/'));
+    const METHOD = event.request.method;
+    let VERB = '';
+    console.log('dataFETCH ' + URL);
+    if (event.request.url.includes('api/v1')) {                                      // DATA
+        switch (METHOD) {
             case 'POST':
-                return event.respondWith(handlePost(event))
+                VERB = URL_ARR.pop();
+                return event.respondWith(handlePost(event, METHOD, VERB));          // event, method, verb
+            case 'PUT':
+                VERB = URL_ARR.pop();
+                VERB = URL_ARR.pop();
+                return event.respondWith(handlePost(event, METHOD, VERB));          // event, method, verb
+
         }
         // switch(method)
         // find verb
