@@ -60,7 +60,7 @@ class Temperature extends React.Component {
             })
             .then(response => {
                 if (response.success) {
-                    this.setState({temperatures, activeUnit: clearUnit});
+                    this.setState({activeUnit: clearUnit});
                     console.log('Saved');
                 } else {
                     console.log('Saving ...', response)

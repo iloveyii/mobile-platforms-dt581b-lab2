@@ -181,10 +181,6 @@ const handleRead = (event, VERB, id) => {
             })
             .then(() => idb.connect(DB_NAME))
             .then(db => db.update(VERB, response_data))
-            .then(() => {
-                console.log('read then ', response_data);
-                resolve(new Response(JSON.stringify(response_data)))
-            })
             .catch(error => {
                 console.log('READ ERR ', error);
                 idb.connect(DB_NAME)
