@@ -36,67 +36,6 @@ self.addEventListener('activate', function (event) {
     console.log('Service worker activated -remove old caches', event);
 });
 
-function get_data(event) {
-    return new Promise(function (resolve, reject) {
-        let verb = '';
-        const idb = new Database();
-        let request_data, response_data;
-
-        switch (event.request.method) {
-            case 'GET':
-                verb = (event.request.url.split('/')).pop();
-                return fetch(event.request.url)
-                    .then(response => response.json())
-                    .then(data => response_data = data)
-                    .then(() => idb.connect(DB_NAME))
-                    .then(db => db.update(verb, response_data))
-                    .then(() => resolve(new Response(JSON.stringify(response_data))))
-                    .catch(error => {
-                        console.log('GET Error ', error);
-                        idb.connect(DB_NAME)
-                            .then(db => db.read(verb))
-                            .then(data => {
-                                if (data && data[0]) {
-                                    resolve(new Response(JSON.stringify(data[0])))
-                                } else {
-                                    resolve(new Response(JSON.stringify({success: false})))
-                                }
-                            })
-                    });
-                break;
-            case 'POST':
-                verb = (event.request.url.split('/')).pop();
-                return event.request.json()
-                    .then(data => request_data = data)
-                    .then(() =>
-                        fetch(event.request.url, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(request_data)
-                        })
-                    )
-                    .then(response => response.json())
-                    .then(data => response_data = data)
-                    .then(() => resolve(data))
-                    .catch(error => {
-                        console.log('POST ERR ', error);
-                        idb.connect(DB_NAME)
-                            .then(db => db.add_to_store_data(verb + '_sync', request_data))
-                            .then(response => resolve(new Response(JSON.stringify(response))))
-                    });
-                break;
-
-            case 'PUT':
-                break;
-            case 'DELETE':
-                break;
-        }
-    })
-}
-
 const handlePost = (event, METHOD, VERB) => {
     return new Promise(function (resolve, reject) {
         const idb = new Database();
@@ -115,7 +54,7 @@ const handlePost = (event, METHOD, VERB) => {
             )
             .then(response => response.json())
             .then(data => response_data = data)
-            .then(() => resolve(data))
+            .then(() => resolve(new Response(JSON.stringify(response_data))))
             .catch(error => {
                 console.log('POST ERR ', error);
                 idb.connect(DB_NAME)
@@ -217,26 +156,6 @@ self.addEventListener('fetch', function (event) {
                 VERB = URL_ARR.pop();
                 return event.respondWith(handleRead(event, VERB, null));          // event, method, verb
         }
-        // switch(method)
-        // find verb
-        // get request body
-        // make fetch - if read save to idb
-        // return Response
-
-        // Catch
-        // switch(method) if read , from idb
-        // if other mark(req body data.type=create|update|delete) it in _sync using idb
-
-        // Update sync
-
-
-        // const resp = await fetch(event.request.url);
-        // const jsonData = await resp.json();
-        // const strData = JSON.stringify(jsonData);
-        // const response2 = new Response(strData);
-        // const response1 = new Response(JSON.stringify({success: false, data: []}));
-        // console.log('dataFETCH with api v1 ' + event.request.url, response1);
-        // event.respondWith(response1);
     } else {                                                                                // ASSETS
         // console.log('ASSET PART from online : ', event.request.url);
         event.respondWith(
@@ -264,21 +183,35 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 self.addEventListener('sync', function (event) {
-    // console.log('SYNC Started');
-    // const idb = new Database();
-    // idb.connect(DB_NAME)
-    //     .then(db => db.read('temperatures_sync'))
-    //     .then(data => {
-    //         console.log(data[0]);
-    //         if (!data || data[0]) return false;
-    //         return fetch('http://localhost:5000/api/v1/temperatures', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: data && data[0] ? JSON.stringify(data[0].data) : ''
-    //         })
-    //             .then(response => console.log(response))
-    //     });
+    console.log('SYNC Started');
+    const idb = new Database();
+    idb.connect(DB_NAME)
+        .then(db => db.read('temperatures_sync'))
+        .then(data => {
+            console.log('SYNC ', data); // {success: true, data: []}
+            if (data && data.success && data.success === true) {
+                data.data.map(unit => {
+                    let id = '';
+                    const METHOD = unit.method;
+                    if (['PUT', 'DELETE'].includes(METHOD)) {
+                        id = '/' + unit.id;
+                    }
+                    return fetch('http://localhost:5000/api/v1/temperatures' + id, {
+                        method: METHOD,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({form: unit})
+                    })
+                        .then(response => console.log(response))
+                });
+
+                Promise.all(data.data).then(() => {
+                    console.log('Resolved all');
+                })
+            }
+        })
+        .then(() => idb.connect(DB_NAME))
+        .then(db => db.update('temperatures_sync', {success: true, data: []}))
 });

@@ -38,7 +38,7 @@ class Right extends React.Component {
     }
 
     handleChange = e => {
-        console.log(e.target.id)
+        console.log(e.target.id);
         const {activeUnit} = this.state;
         activeUnit[e.target.id] = e.target.value;
         this.setState({activeUnit});
