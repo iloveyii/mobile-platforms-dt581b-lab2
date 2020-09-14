@@ -19,7 +19,7 @@ async function clearOldCaches(version) {
 
 if (true && 'serviceWorker' in navigator) {
     navigator.serviceWorker
-        .register('/sw2.js')
+        .register('/sw.js')
         .then(async function (event) {
             // console.log('Service worker registered sw2', event.scope);
             await setCurrentVersion();

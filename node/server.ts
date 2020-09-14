@@ -1,5 +1,8 @@
 import dotenv from "dotenv";
 import app from "./src/app";
+import boxen from "boxen";
+import chalk from "chalk";
+
 
 const session = require("express-session");
 
@@ -33,14 +36,16 @@ app.use(
 // Express server
 // ----------------------------------
 const server = app.listen(PORT, () => {
-    console.log(
-        "  SERVER is running on %s:%d in %s mode",
-        SERVER,
-        PORT,
-        process.env.NODE_ENV ? process.env.NODE_ENV : "prod",
-    );
-    console.log("  To change these config(server and port), edit .env file\n");
-    console.log("  Press CTRL-C to stop\n");
-});
+    const ENV = process.env.NODE_ENV ? process.env.NODE_ENV : "prod";
+    let message = `\n${chalk.bold(`SERVER is running on ${SERVER}:${PORT} in ${ENV} mode `)}`;
+        message += `\n${chalk.green('To change these config(server and port), edit .env file')}`;
+        message += `\n\n${chalk.red('Press CTRL-C to stop')}`;
+        console.log(boxen(message, {
+            padding: 1,
+            borderColor: 'green',
+            margin: 1
+        }));
+}
+);
 
 export default server;
