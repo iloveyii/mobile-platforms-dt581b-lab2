@@ -36,16 +36,17 @@ app.use(
 // Express server
 // ----------------------------------
 const server = app.listen(PORT, () => {
-    const ENV = process.env.NODE_ENV ? process.env.NODE_ENV : "prod";
-    let message = `\n${chalk.bold(`SERVER is running on ${SERVER}:${PORT} in ${ENV} mode `)}`;
+        const ENV = process.env.NODE_ENV ? process.env.NODE_ENV : "prod";
+        let message = `\n${chalk.bold(`SERVER is running on ${SERVER}:${PORT} in ${ENV} mode `)}`;
         message += `\n${chalk.green('To change these config(server and port), edit .env file')}`;
         message += `\n\n${chalk.red('Press CTRL-C to stop')}`;
+
         console.log(boxen(message, {
             padding: 1,
             borderColor: 'green',
             margin: 1
         }));
-}
+    }
 );
 
 export default server;
