@@ -2,7 +2,8 @@ import { MongoClient, ObjectId } from "mongodb";
 
 
 const mongo = {
-    url: "mongodb://localhost:27017",
+    // url: "mongodb://admin:admin123admin321@server.softhem.se:27017",
+    url: "mongodb://admin:admin123@localhost:27017",
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
 };
 
