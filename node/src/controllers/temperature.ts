@@ -10,7 +10,8 @@ const database = new Database("temperature_units");
 // @route  GET /api/v1/temperatures
 export const getTemperatures = async (req: Request, res: Response, next: NextFunction) => {
     const model = new Temperature(database, undefined);
-    await model.read();
+    const condition = new Condition({where: {}});
+    await model.readSort(condition, {timestamp: -1});
     return res.status(200).send(model.response);
 };
 

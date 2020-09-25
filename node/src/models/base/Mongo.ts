@@ -15,7 +15,7 @@ class Mongo implements ModelI {
         data: []
     };
 
-    constructor(protected database: Database, private readonly collection: string, public data: any) {
+    constructor(protected database: Database, protected readonly collection: string, public data: any) {
     }
 
     // ----------------------------------
