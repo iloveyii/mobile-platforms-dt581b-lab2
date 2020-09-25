@@ -41,6 +41,7 @@ class Right extends React.Component {
         console.log(e.target.id);
         const {activeUnit} = this.state;
         activeUnit[e.target.id] = e.target.value;
+        activeUnit['timestamp'] = Date.now();
         this.setState({activeUnit});
     };
 
