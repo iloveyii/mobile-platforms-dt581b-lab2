@@ -40,7 +40,7 @@ export default props => {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        News
+                        Lab 2
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
