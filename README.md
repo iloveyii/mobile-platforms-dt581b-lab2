@@ -14,7 +14,7 @@ HKR                   |  Mobile Platforms
 
 
    * [DEMO LAB 2 - Link 1](http://34.203.242.6:4000/)
-   * [DEMO LAB 2 - Link 2](https://mobile-platforms-lab2.web.app/)
+   * [DEMO LAB 2 - Link 2](https://mobile-platforms-lab2.web.app/) 
 
 
 # INSTALLATION
@@ -64,7 +64,7 @@ We will use Ubuntu as operating system for all installations below.
 ## SERVER - Backend
    * CD to node `cd node`
    * Install `dotenv express express-session`
-   * Create tslint.json and tsconfig.json files 
+   * Create tslint.json and tsconfig.json files
 
 
 # HOSTING - Firebase
