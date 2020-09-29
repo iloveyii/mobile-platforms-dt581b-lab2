@@ -5,7 +5,7 @@ import Right from './Right';
 import {temperatures} from "../../constants/mock";
 
 
-const api = 'http://localhost:5000/api/v1/temperatures';
+const api = 'http://34.203.242.6:5000/api/v1/temperatures';
 const clearUnit = {
     unit_id: '',
     temperature: '',
@@ -17,6 +17,7 @@ class Temperature extends React.Component {
         super(props);
         this.state = {
             temperatures,
+            average: '',
             activeUnit: clearUnit
         }
     }
@@ -30,7 +31,15 @@ class Temperature extends React.Component {
             })
             .then(response => {
                 if (response.success) {
-                    this.setState({temperatures: response.data})
+                  window.data = response.data;
+                  const data = response.data.slice(0,5);
+                  let sum = 0;
+                  data.map( d => sum += Number(d.temperature) );
+                  let average =   sum/ data.length;
+                  console.log(average);
+                  average = Math.round( average );
+                  console.log(average);
+                  this.setState({temperatures: response.data, average})
                 }
             })
             .catch(error => {
@@ -60,6 +69,11 @@ class Temperature extends React.Component {
             })
             .then(response => {
                 if (response.success) {
+                    if(method === 'POST') {
+                      clearUnit.status = 'create.success';
+                    } else {
+                      clearUnit.status = 'update.success';
+                    }
                     this.setState({activeUnit: clearUnit});
                     console.log('Saved');
                 } else {
@@ -87,6 +101,8 @@ class Temperature extends React.Component {
             })
             .then(data => {
                 if (data.success) {
+                    clearUnit.status = 'delete.success';
+                    this.setState({activeUnit: clearUnit});
                     console.log('Deleted', unit)
                 }
             })
@@ -111,10 +127,12 @@ class Temperature extends React.Component {
         if (index !== -1) {
             temperatures[index] = activeUnit;
             this.saveData(activeUnit, 'PUT');
+            return 'update.success';
         } else {
             activeUnit.timestamp = Date.now();
             temperatures.push(activeUnit);
             this.saveData(activeUnit, 'POST');
+            return 'create.success';
         }
     };
 
@@ -125,7 +143,8 @@ class Temperature extends React.Component {
         this.setState({
             temperatures, activeUnit: clearUnit
         });
-        console.log(temperatures)
+        console.log(temperatures);
+        return 'delete.success';
     };
 
     render() {
@@ -133,6 +152,7 @@ class Temperature extends React.Component {
             <Grid container>
                 <Grid item sm xs={12}>
                     <Left setActiveUnit={this.setActiveUnit} temperatures={this.state.temperatures}/>
+                    <h4>Average : {this.state.average}</h4>
                 </Grid>
                 <Grid item sm xs={12}>
                     <Right deleteActiveUnit={this.deleteActiveUnit} updateActiveUnit={this.updateActiveUnit}

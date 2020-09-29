@@ -44,6 +44,46 @@ class Right extends React.Component {
         this.setState({activeUnit});
     };
 
+    deleteUnit = e => {
+      e.preventDefault();
+      let {activeUnit} = this.state;
+      const status = this.props.deleteActiveUnit(activeUnit);
+      activeUnit = {
+          unit_id: '',
+          temperature: '',
+          timestamp: ''
+      };
+
+      if(status === 'delete.success') {
+        activeUnit.status = 'Deleted successfully';
+      }
+      setTimeout(() => {
+        console.log('Right');
+        this.setState({activeUnit});
+      },2000);
+    }
+
+    save = e => {
+      e.preventDefault();
+      let {activeUnit} = this.state;
+      const status = this.props.updateActiveUnit(activeUnit);
+      activeUnit = {
+          unit_id: '',
+          temperature: '',
+          timestamp: ''
+      };
+      if(status === 'update.success') {
+        activeUnit.status = 'Updated successfully';
+      }
+      if(status === 'create.success') {
+        activeUnit.status = 'Created successfully';
+      }
+      setTimeout(() => {
+        console.log('Right');
+        this.setState({activeUnit});
+      }, 2000);
+    };
+
     render() {
         const {activeUnit} = this.state;
         return (
@@ -70,7 +110,7 @@ class Right extends React.Component {
 
                         <Box mt={5}>
                             <Button
-                                onClick={(e) => this.props.updateActiveUnit(this.state.activeUnit)}
+                                onClick={this.save }
                                 mt={5}
                                 variant="contained"
                                 color="primary"
@@ -81,7 +121,7 @@ class Right extends React.Component {
                             </Button>
 
                             <Button
-                                onClick={(e) => this.props.deleteActiveUnit(this.state.activeUnit)}
+                                onClick={this.deleteUnit}
                                 variant="contained"
                                 mt={5}
                                 color="secondary"
@@ -94,6 +134,10 @@ class Right extends React.Component {
 
                     </div>
                 </Paper>
+
+                <Box mt={3}>
+                  <p>{this.state.activeUnit.status && ( ! ['delete.success', 'create.success', 'update.success'].includes(this.state.activeUnit.status) ) ? this.state.activeUnit.status : ''}</p>
+                </Box>
             </Box>
         )
     }
