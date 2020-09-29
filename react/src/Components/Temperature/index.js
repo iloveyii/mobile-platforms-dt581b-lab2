@@ -12,14 +12,29 @@ const clearUnit = {
     timestamp: ''
 };
 
+const REFRESH_THRESHOLD = 10; // Seconds
+
 class Temperature extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             temperatures,
             average: '',
-            activeUnit: clearUnit
+            activeUnit: clearUnit,
+            timer: 0
+        };
+        this.startTimer();
+    }
+
+    startTimer = () => {
+      setInterval(() => {
+        let {timer} = this.state;
+        if(timer > REFRESH_THRESHOLD) {
+          timer = 0;
+          this.fetchData();
         }
+        this.setState({timer: timer+1});
+      }, 1000);
     }
 
     fetchData = () => {
@@ -36,9 +51,6 @@ class Temperature extends React.Component {
                   let sum = 0;
                   data.map( d => sum += Number(d.temperature) );
                   let average =   sum/ data.length;
-                  console.log(average);
-                  average = Math.round( average );
-                  console.log(average);
                   this.setState({temperatures: response.data, average})
                 }
             })
@@ -148,11 +160,15 @@ class Temperature extends React.Component {
     };
 
     render() {
+        let timer = REFRESH_THRESHOLD - this.state.timer;
+        if (timer < 0) timer = 0;
+        
         return (
             <Grid container>
                 <Grid item sm xs={12}>
                     <Left setActiveUnit={this.setActiveUnit} temperatures={this.state.temperatures}/>
                     <h4>Average : {this.state.average}</h4>
+                    <p>Refreshing in  { timer }</p>
                 </Grid>
                 <Grid item sm xs={12}>
                     <Right deleteActiveUnit={this.deleteActiveUnit} updateActiveUnit={this.updateActiveUnit}
