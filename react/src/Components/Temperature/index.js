@@ -12,7 +12,7 @@ const clearUnit = {
     timestamp: ''
 };
 
-const REFRESH_THRESHOLD = 10; // Seconds
+const REFRESH_THRESHOLD = 60; // Seconds - 60
 
 class Temperature extends React.Component {
     constructor(props) {
@@ -162,7 +162,7 @@ class Temperature extends React.Component {
     render() {
         let timer = REFRESH_THRESHOLD - this.state.timer;
         if (timer < 0) timer = 0;
-        
+
         return (
             <Grid container>
                 <Grid item sm xs={12}>
